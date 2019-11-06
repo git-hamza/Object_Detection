@@ -1,0 +1,13 @@
+#!/bin/bash
+#export LD_LIBRARY_PATH=/usr/local/cuda-8.0_cudnn-6.0/lib64
+#export PYTHONPATH=../tensorflow/models/research/slim:../tensorflow/models/research
+
+# From the tensorflow/models/research/ directory
+python3 object_detection/legacy/eval.py \
+    --logtostderr \
+    --pipeline_config_path=train/pipeline.config \
+    --checkpoint_dir=train \
+    --eval_dir=eval \
+     --run_once=True \
+
+

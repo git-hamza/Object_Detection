@@ -1,0 +1,8 @@
+#!/bin/bash
+mkdir -p train
+
+python3 object_detection/legacy/train.py \
+    --logtostderr \
+    --pipeline_config_path=config/faster_rcnn_resnet50_coco.config \
+    --train_dir=train \
+

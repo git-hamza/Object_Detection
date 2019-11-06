@@ -1,0 +1,17 @@
+#!/bin/bash
+#export LD_LIBRARY_PATH=/usr/local/cuda-8.0_cudnn-6.0/lib64
+#export PYTHONPATH=../tensorflow/models/research/slim:../tensorflow/models/research
+
+latest=$(basename $(ls -t train/model.ckpt-*index | head -1 ) .index)
+trained_checkpoint_prefix=train/$latest
+
+echo "trained_checkpoint_prefix= $trained_checkpoint_prefix"
+rm -rf output_inference_graph.pb
+
+python3 object_detection/export_inference_graph.py \
+    --input_type image_tensor \
+    --pipeline_config_path train/pipeline.config	 \
+    --trained_checkpoint_prefix $trained_checkpoint_prefix \
+    --output_directory output_inference_graph.pb \
+
+
