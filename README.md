@@ -47,7 +47,7 @@ Note: if the *run_train*, *run_eval* or *run_export* is not running through thos
 
 ```
 1. python3 xml_to_csv.py
-2. python3 python generate_tfrecord.py --csv_input=train.csv  --output_path=../inputs/train.record
+2. python3 generate_tfrecord.py --csv_input=train.csv  --output_path=../inputs/train.record
 3. python3 generate_tfrecord.py --csv_input=val.csv  --output_path=../inputs/val.record
 4. ./run_train
 5. ./run_eval
