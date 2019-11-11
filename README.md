@@ -1,4 +1,4 @@
-﻿﻿# Object_Detection
+# Object_Detection
 Folder structure of Object detection
 Please keep all the folder names as it is mentioned. e.g. annotation, images etc.
 
