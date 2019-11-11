@@ -49,10 +49,10 @@ person_detection_classes = None
 person_num_detections = None
 
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
-PERSON_PATH_TO_CKPT = 'frozen_inference_graph.pb'
+PATH_TO_CKPT = 'output_inference_graph.pb/frozen_inference_graph.pb'
 
 # List of the strings that is used to add correct label for each box.
-S_PATH_TO_LABELS = 'label_map.pbtxt'
+PATH_TO_LABELS = 'label_map.pbtxt'
 
 ## number of classes that frozen file is trained for
 NUM_CLASSES = 1
@@ -62,7 +62,7 @@ NUM_CLASSES = 1
 person_detection_graph = tf.Graph()
 with person_detection_graph.as_default():
   od_graph_def = tf.GraphDef()
-  with tf.gfile.GFile(PERSON_PATH_TO_CKPT, 'rb') as fid:
+  with tf.gfile.GFile(PATH_TO_CKPT, 'rb') as fid:
     serialized_graph = fid.read()
     od_graph_def.ParseFromString(serialized_graph)
     tf.import_graph_def(od_graph_def, name='')
@@ -70,7 +70,7 @@ with person_detection_graph.as_default():
 
 
 # ## Loading hole label map
-s_label_map = label_map_util.load_labelmap(S_PATH_TO_LABELS)
+s_label_map = label_map_util.load_labelmap(PATH_TO_LABELS)
 s_categories = label_map_util.convert_label_map_to_categories(s_label_map, max_num_classes=NUM_CLASSES, use_display_name=True)
 s_category_index = label_map_util.create_category_index(s_categories)
 
@@ -107,10 +107,9 @@ with person_detection_graph.as_default():
     sboxes = np.squeeze(boxes);
     sclasses = np.squeeze(classes).astype(np.int32);
     sscores = np.squeeze(scores);
-    _,box= vis_util.visualize_boxes_and_labels_on_image_array(image_np,sboxes,sclasses,
-      sscores,s_category_index,min_score_thresh=TH,
-      max_boxes_to_draw=10,use_normalized_coordinates=True,
-      skip_scores=False,line_thickness=2)
+    vis_util.visualize_boxes_and_labels_on_image_array(image_np,sboxes,sclasses,sscores,
+        s_category_index,min_score_thresh=TH,max_boxes_to_draw=10,
+        use_normalized_coordinates=True,skip_scores=False,line_thickness=2)
     image_np=cv2.cvtColor(image_np,cv2.COLOR_RGB2BGR)
     cv2.imwrite(Saved_IMG_PATH,image_np)
 
