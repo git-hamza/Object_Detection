@@ -15,16 +15,18 @@ from object_detection.utils import visualization_utils as vis_util
 
 ##Argumentparser is used to run through the terminal 
 parser = argparse.ArgumentParser()
-parser.add_argument('-i', dest='input_image',
-                    help='image to be processed')
-parser.add_argument('-o', dest='output_image',
-                    help='path of output image')
+parser.add_argument('-i', dest='input_image_batch',
+                    help='image folder to be precessed')
+parser.add_argument('-o', dest='output_directory',
+                    help='directory path for output images')
 args = parser.parse_args()
 
 ##Input and output video path
-INPUT_IMG_PATH =  args.input_image
-OUTPUT_IMG_PATH = args.output_image
+INPUT_DIR_PATH =  args.input_image_batch
+Output_DIR_PATH = args.output_directory
 
+if not os.path.isdir(Output_DIR_PATH):
+    os.mkdir(Output_DIR_PATH)
 
 ##Threshold at which the detection bounding boxes will display
 TH = 0.70
@@ -67,7 +69,6 @@ def resize_img(frame):
     resized = cv2.resize(frame, dim, interpolation = cv2.INTER_AREA)
     return resized
 
-
 with detection_graph.as_default():
   with tf.Session(graph=detection_graph) as sess:
     # Definite input and output Tensors for detection_graph
@@ -81,22 +82,30 @@ with detection_graph.as_default():
     num_detections = detection_graph.get_tensor_by_name('num_detections:0')
     
     ##Loading image
-    image = cv2.imread(INPUT_IMG_PATH)
-    # image = resize_img(image)
-    image_np = cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
-    image_np_expanded = np.expand_dims(image_np, axis=0)
-    fetch_time = time.time()
-    # Actual detection.
-    (boxes, scores, classes, num) = sess.run(
-        [detection_boxes, detection_scores, detection_classes, num_detections],
-        feed_dict={image_tensor: image_np_expanded})
+    count = 0
+    mypath = INPUT_DIR_PATH
+    onlyfiles = [ f for f in listdir(mypath) if isfile(join(mypath,f)) ]
+    for n in range(0,len(onlyfiles)):
+        count +=1
+        print("count : " + str(count))
+        image = cv2.imread(join(mypath, onlyfiles[n]))
+        # image = resize_img(image)
+        image_np = cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
+        image_np_expanded = np.expand_dims(image_np, axis=0)
+        fetch_time = time.time()
 
-    sboxes = np.squeeze(boxes);
-    sclasses = np.squeeze(classes).astype(np.int32);
-    sscores = np.squeeze(scores);
-    _= vis_util.visualize_boxes_and_labels_on_image_array(image,sboxes,sclasses,
-      sscores,s_category_index,min_score_thresh=TH,
-      max_boxes_to_draw=100,use_normalized_coordinates=True,
-      skip_scores=False,line_thickness=6)
-    print("Inference_Time : " + str(time.time()-fetch_time))
-    cv2.imwrite(OUTPUT_IMG_PATH,image)
+        # Actual detection.
+        (boxes, scores, classes, num) = sess.run(
+        	[detection_boxes, detection_scores, detection_classes, num_detections],
+        	feed_dict={image_tensor: image_np_expanded})
+
+        sboxes = np.squeeze(boxes);
+        sclasses = np.squeeze(classes).astype(np.int32);
+        sscores = np.squeeze(scores);
+        _= vis_util.visualize_boxes_and_labels_on_image_array(image,sboxes,sclasses,
+          sscores,s_category_index,min_score_thresh=TH,
+          max_boxes_to_draw=100,use_normalized_coordinates=True,
+          skip_scores=False,line_thickness=6)
+        print("Inference_Time : " + str(time.time()-fetch_time))
+        cv2.imwrite(Output_DIR_PATH+onlyfiles[n],image)
+

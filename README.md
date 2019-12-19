@@ -54,6 +54,9 @@ After you training when you are reading to export the freezing graph. You run th
 ###### Image_Detection_through_frozenfile.py : 
 This is a python file that help you run inference with the help of frozen file. You just have to set the path of frozen file and label_map.pbtxt and set the threshold. You can run the file as
 ```python3 Image_Detection_through_frozenfile.py -i Path_of_Input_Image -o Path_of_Output_Image```.
+###### ImagesBatch_Detection_through_frozenfile.py : 
+This is a python file that help you run inference with the help of frozen file. You just have to set the path of frozen file and label_map.pbtxt and set the threshold. You can run the file as
+```python3 ImagesBatch_Detection_through_frozenfile.py -i Path_of_Input_Image_Folder -o Path_of_Output_Directory```.
 ###### Video_Detection_through_frozenfile.py : 
 This is a python file that help you run inference with the help of frozen file. You just have to set the path of frozen file and label_map.pbtxt and set the threshold. You can run the file as
 ```python3 Video_Detection_through_frozenfile.py -i Path_of_Input_Video -o Path_of_Output_Video```.
