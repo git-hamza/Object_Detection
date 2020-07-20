@@ -60,3 +60,20 @@ This is a python file that help you run inference with the help of frozen file. 
 ###### Video_Detection_through_frozenfile.py : 
 This is a python file that help you run inference with the help of frozen file. You just have to set the path of frozen file and label_map.pbtxt and set the threshold. You can run the file as
 ```python3 Video_Detection_through_frozenfile.py -i Path_of_Input_Video -o Path_of_Output_Video```.
+
+#####Note
+Loading with multiple tfrecords file.
+You can simply assign list of the file path by changing config file from train_input_reader: {
+ tf_record_input_reader {
+   input_path: "PATH_TO_BE_CONFIGURED/train.record"
+ }
+ label_map_path: "PATH_TO_BE_CONFIGURED/label_map.pbtxt"
+}
+to train_input_reader: {
+ tf_record_input_reader {
+   input_path: ["PATH_TO_BE_CONFIGURED/train_a.record",
+                "PATH_TO_BE_CONFIGURED/train_b.record"]
+ }
+ label_map_path: "PATH_TO_BE_CONFIGURED/label_map.pbtxt"
+}
+this change may only work when multiple tfrecord files use the same label_map.
