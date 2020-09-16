@@ -37,13 +37,13 @@ detection_classes = None
 num_detections = None
 
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
-PATH_TO_CKPT = 'frozen_inference_graph.pb'
+PATH_TO_CKPT = 'output_inference_graph.pb/frozen_inference_graph.pb'
 
 # List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = 'label_map.pbtxt'
+PATH_TO_LABELS = 'inputs/label_map.pbtxt'
 
 ## number of classes that frozen file is trained for
-NUM_CLASSES = 22
+NUM_CLASSES = 1
 
 # ## Load a (frozen) Tensorflow model into memory.
 detection_graph = tf.Graph()
